@@ -1,0 +1,5 @@
+# Do not include the example in the distribution. This example is for internal use only.
+example
+build
+
+*.iml
