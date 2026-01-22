@@ -1,6 +1,6 @@
 name: prelude_flutter_sdk
 description: "Prelude Flutter SDK. Easily integrate Prelude in your Flutter application."
-version: 0.1.0
+version: 0.2.1
 homepage: "https://prelude.so"
 documentation: "https://docs.prelude.so/introduction/frontend-sdks/flutter"
 repository: "https://github.com/prelude-so/flutter-sdk"

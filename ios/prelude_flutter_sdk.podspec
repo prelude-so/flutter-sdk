@@ -15,7 +15,7 @@ Flutter SDK that allows Flutter applications to use the native Prelude SDKs for 
   s.swift_version    = '5.4'
   s.module_name      = 'prelude_flutter_sdk'
   
-  apple_sdk_version = '0.2.4'
+  apple_sdk_version = '0.2.5'
   sdk_path = File.join(__dir__, 'sdk')
   
   require 'fileutils'

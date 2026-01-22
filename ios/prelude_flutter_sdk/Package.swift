@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "prelude-flutter-sdk", targets: ["prelude_flutter_sdk"])
     ],
     dependencies: [
-        .package(url: "https://github.com/prelude-so/apple-sdk", from: "0.2.4")
+        .package(url: "https://github.com/prelude-so/apple-sdk", from: "0.2.5")
     ],
     targets: [
         .target(
