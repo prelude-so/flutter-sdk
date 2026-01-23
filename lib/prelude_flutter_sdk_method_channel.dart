@@ -26,7 +26,10 @@ class MethodChannelPreludeFlutterSdk extends PreludeFlutterSdkPlatform {
       'signalsScope': signalsScope.value,
     };
 
-    String? dispatchIdResult = await methodChannel.invokeMethod<String>('dispatchSignals', args);
+    String? dispatchIdResult = await methodChannel.invokeMethod<String>(
+      'dispatchSignals',
+      args,
+    );
     if (dispatchIdResult == null) {
       throw StateError("Dispatch Method Channel failed. Dispatch id is null.");
     } else {
@@ -39,14 +42,16 @@ class MethodChannelPreludeFlutterSdk extends PreludeFlutterSdkPlatform {
     required String sdkKey,
     required String requestUrl,
   }) async {
-    final args = <String, dynamic>{
-      'sdkKey': sdkKey,
-      'requestUrl': requestUrl,
-    };
+    final args = <String, dynamic>{'sdkKey': sdkKey, 'requestUrl': requestUrl};
 
-    String? verificationCode = await methodChannel.invokeMethod<String>('verifySilent', args);
+    String? verificationCode = await methodChannel.invokeMethod<String>(
+      'verifySilent',
+      args,
+    );
     if (verificationCode == null) {
-      throw StateError("VerifySilent Method Channel failed. Verification code is null.");
+      throw StateError(
+        "VerifySilent Method Channel failed. Verification code is null.",
+      );
     } else {
       return verificationCode;
     }
