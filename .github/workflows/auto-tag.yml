@@ -1,4 +1,4 @@
-name: Auto-tag and publish on version change
+name: Auto-tag on version change
 on:
   push:
     branches:
@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    outputs:
-      tag_created: ${{ steps.check_tag.outputs.tag_created }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -32,6 +30,12 @@ jobs:
             echo "tag_created=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Configure git user
+        if: steps.check_tag.outputs.tag_created == 'true'
+        run: |
+          git config user.name "Prelude Tech [bot]"
+          git config user.email "hello@prelude.so"
+
       - name: Create and push tag
         if: steps.check_tag.outputs.tag_created == 'true'
         env:
@@ -39,18 +43,3 @@ jobs:
         run: |
           git tag -a "$TAG" -m "Release $TAG"
           git push origin "$TAG"
-
-  publish:
-    needs: auto-tag
-    if: needs.auto-tag.outputs.tag_created == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # Required for OIDC authentication with pub.dev
-    steps:
-      - uses: actions/checkout@v6
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - run: flutter pub publish --dry-run
-      - run: flutter pub publish --force
