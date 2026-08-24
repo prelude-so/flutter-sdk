@@ -2,6 +2,10 @@
 
 Prelude Flutter SDK Change Log
 
+## [0.6.1] - 2026-08-19
+
+- Update native Android SDK to version 0.6.2. Improves host lookup retry mechanism.
+
 ## [0.6.0] - 2026-06-11
 
 - Update native Android SDK to version 0.6.1 and iOS SDK to version 0.6.0. These updates add collection of the device screen brightness signal, harden signal dispatch on unstable cellular connections, and prefer validated, Internet-capable network routes.
