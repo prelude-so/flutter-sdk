@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'prelude_flutter_sdk'
-  s.version          = '0.1.0'
+  s.version          = '0.6.1'
   s.summary          = 'Prelude Flutter SDK.'
   s.description      = <<-DESC
 Flutter SDK that allows Flutter applications to use the native Prelude SDKs for Android and iOS.
