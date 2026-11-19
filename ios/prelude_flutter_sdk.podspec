@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'prelude_flutter_sdk'
-  s.version          = '0.6.1'
+  s.version          = '0.6.2'
   s.summary          = 'Prelude Flutter SDK.'
   s.description      = <<-DESC
 Flutter SDK that allows Flutter applications to use the native Prelude SDKs for Android and iOS.
@@ -15,7 +15,7 @@ Flutter SDK that allows Flutter applications to use the native Prelude SDKs for 
   s.swift_version    = '5.4'
   s.module_name      = 'prelude_flutter_sdk'
   
-  apple_sdk_version = '0.6.0'
+  apple_sdk_version = '0.6.1'
   sdk_path = File.join(__dir__, 'sdk')
   
   require 'fileutils'
