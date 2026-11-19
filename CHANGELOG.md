@@ -2,6 +2,10 @@
 
 Prelude Flutter SDK Change Log
 
+## [0.6.2] - 2026-11-19
+
+- Update native iOS SDK to version 0.6.1. It no longer collects the device boot time, and it fixes the CPU architecture signal.
+
 ## [0.6.1] - 2026-08-19
 
 - Update native Android SDK to version 0.6.2. Improves host lookup retry mechanism.

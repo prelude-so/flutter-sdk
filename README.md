@@ -60,8 +60,9 @@ Future<void> collectSignals() async {
       requestTimeoutMilliseconds: 10000, // optional, defaults to 10 000 ms
       automaticRetryCount: 3,            // optional, defaults to 3 retries with exponential backoff
       implementedFeatures: [],           // required for the silent verification feature
-      signalsScope: SignalsScope.full,   // optional, default is `full`, set to `silentVerification`
-                                         // when using the silent verification feature
+      signalsScope: SignalsScope.full,   // optional, default is `full`. Keep `full`, also with
+                                         // silent verification: it is the only scope that sends
+                                         // the device signals used for fraud detection
     );
 
     // Send the `dispatchId` to your server
@@ -94,7 +95,6 @@ Future<void> performSilentVerification() async {
     final dispatchId = await prelude.dispatchSignals(
       sdkKey: 'sdk_XXXXXXXXXXXXXXXX', // ← your SDK key
       implementedFeatures: [Features.silentVerification], // ← required
-      signalsScope: SignalsScope.silentVerification       // ← required
     );
 
     // Start the verification process with your backend
