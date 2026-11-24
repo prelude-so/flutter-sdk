@@ -57,3 +57,69 @@ jobs:
               ref: tag,
               inputs: { tag },
             });
+
+  # Publish a GitHub Release for the tag created above. Its notes are that
+  # version's section of CHANGELOG.md. Fails if the section is missing or empty.
+  github-release:
+    needs: auto-tag
+    if: needs.auto-tag.outputs.created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          ref: ${{ needs.auto-tag.outputs.tag }}
+
+      - name: Build release notes
+        env:
+          TAG: ${{ needs.auto-tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+          VERSION="${TAG#v}"
+
+          # Print everything between "## [VERSION]" and the next "## [" heading.
+          changes=$(awk -v v="$VERSION" '
+            index($0, "## [" v "]") == 1 { found = 1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md | sed -e '/./,$!d')
+
+          if ! printf '%s' "$changes" | grep -q '[^[:space:]]'; then
+            echo "::error file=CHANGELOG.md::No '## [$VERSION]' section with content found in CHANGELOG.md"
+            exit 1
+          fi
+
+          android=$(sed -nE 's/.*"so\.prelude\.android:sdk:([^"]+)".*/\1/p' android/build.gradle)
+          apple=$(sed -nE "s/^[[:space:]]*apple_sdk_version[[:space:]]*=[[:space:]]*'([^']+)'.*/\1/p" ios/prelude_flutter_sdk.podspec)
+
+          {
+            echo "## What's changed"
+            echo
+            echo "$changes"
+            echo
+            echo "## Installation"
+            echo
+            echo '```yaml'
+            echo "dependencies:"
+            echo "  prelude_flutter_sdk: ^$VERSION"
+            echo '```'
+            echo
+            if [ -n "$android" ] && [ -n "$apple" ]; then
+              echo "Built on Prelude Android SDK \`$android\` and Apple SDK \`$apple\`."
+              echo
+            fi
+            echo "**Full changelog:** [CHANGELOG.md](https://github.com/$GITHUB_REPOSITORY/blob/$TAG/CHANGELOG.md)"
+          } > notes.md
+
+          cat notes.md
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.auto-tag.outputs.tag }}
+        run: |
+          gh release create "$TAG" \
+            --verify-tag \
+            --title "${TAG#v}" \
+            --notes-file notes.md
